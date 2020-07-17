@@ -22,25 +22,24 @@
         }
     }
 
+    function setStrage () {
+        localStorage.setItem('value', editor.getValue());
+        console.log('hoge')
+    }
+
+    function getStrage () {
+        if(localStorage.getItem('value')) {
+            editor.setValue(localStorage.getItem('value'));
+        } else {
+            editor.setValue("ejsを記述すると、右側の緑のパネルにHTMLが吐き出されます。書いた内容は自動的にブラウザで保存され、リロードしても残ります。(キャッシュ等をクリアすると消えてしまいます)");
+        }
+    }
+
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/ejs");
     editor.on("change", update);
-    editor.setValue(`OK, so have fun! :D
--------------------
-<%
-    var fruits = ["Apple", "Pear", "Orange", "Lemon"]
-      , random = " ".repeat(198).split("").map(x => Math.random())
-      ;
-%>
-
-These fruits are amazing:
-<% for(var i = 0; i < fruits.length; ++i) {%>
-  - <%=fruits[i]%>s<% } %>
-
-Let's see some random numbers:
-
-<% random.forEach((c, i) => {
-%> <%=c.toFixed(10) + ((i + 1) % 6 === 0 ? "\\n": "") %><%});%>`, -1);
+    editor.on("change", setStrage);
+    window.addEventListener('load', getStrage);
     editor.focus();
 })();
